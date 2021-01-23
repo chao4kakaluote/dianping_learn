@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dianping_learn_1.dal.UserModelDAO">
+  <resultMap id="BaseResultMap" type="com.example.dianping_learn_1.model.UserModel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created_at, updated_at, telphone, password, nick_name, gender
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.dianping_learn_1.model.UserModel">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (created_at, updated_at, telphone, 
+      password, nick_name, gender
+      )
+    values (#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{telphone,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.dianping_learn_1.model.UserModel">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="telphone != null">
+        telphone,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="telphone != null">
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (created_at, updated_at, telphone, 
+      password, nick_name, gender
+      )
+    values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      (#{item.createdAt,jdbcType=TIMESTAMP}, #{item.updatedAt,jdbcType=TIMESTAMP}, #{item.telphone,jdbcType=VARCHAR}, 
+        #{item.password,jdbcType=VARCHAR}, #{item.nickName,jdbcType=VARCHAR}, #{item.gender,jdbcType=INTEGER}
+        )
+    </foreach>
+  </insert>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user
+    (created_at, updated_at, telphone, password, nick_name, gender)
+    values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.createdAt != null">
+          #{item.createdAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.createdAt == null">
+          NULL,
+        </if>
+        <if test="item.updatedAt != null">
+          #{item.updatedAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updatedAt == null">
+          NULL,
+        </if>
+        <if test="item.telphone != null">
+          #{item.telphone,jdbcType=VARCHAR},
+        </if>
+        <if test="item.telphone == null">
+          NULL,
+        </if>
+        <if test="item.password != null">
+          #{item.password,jdbcType=VARCHAR},
+        </if>
+        <if test="item.password == null">
+          NULL,
+        </if>
+        <if test="item.nickName != null">
+          #{item.nickName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.nickName == null">
+          NULL,
+        </if>
+        <if test="item.gender != null">
+          #{item.gender,jdbcType=INTEGER},
+        </if>
+        <if test="item.gender == null">
+          NULL,
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.dianping_learn_1.model.UserModel">
+    update user
+    <set>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="telphone != null">
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.dianping_learn_1.model.UserModel">
+    update user
+    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+    update user
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="created_at =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.createdAt}
+        </foreach>
+      </trim>
+      <trim prefix="updated_at =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.updatedAt}
+        </foreach>
+      </trim>
+      <trim prefix="telphone =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.telphone}
+        </foreach>
+      </trim>
+      <trim prefix="password =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.password}
+        </foreach>
+      </trim>
+      <trim prefix="nick_name =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.nickName}
+        </foreach>
+      </trim>
+      <trim prefix="gender =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          when  #{item.id} then #{item.gender}
+        </foreach>
+      </trim>
+    </trim>
+    where id in 
+    <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+       #{item.id} 
+    </foreach>
+  </update>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    update user
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="created_at =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.createdAt != null ">
+            when  #{item.id} then #{item.createdAt}
+          </if>
+          <if test="item.createdAt == null ">
+            when  #{item.id} then user.created_at
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="updated_at =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.updatedAt != null ">
+            when  #{item.id} then #{item.updatedAt}
+          </if>
+          <if test="item.updatedAt == null ">
+            when  #{item.id} then user.updated_at
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="telphone =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.telphone != null ">
+            when  #{item.id} then #{item.telphone}
+          </if>
+          <if test="item.telphone == null ">
+            when  #{item.id} then user.telphone
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="password =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.password != null ">
+            when  #{item.id} then #{item.password}
+          </if>
+          <if test="item.password == null ">
+            when  #{item.id} then user.password
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="nick_name =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.nickName != null ">
+            when  #{item.id} then #{item.nickName}
+          </if>
+          <if test="item.nickName == null ">
+            when  #{item.id} then user.nick_name
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="gender =case id" suffix="end,">
+        <foreach collection="list" index="index" item="item" separator=" ">
+          <if test="item.gender != null ">
+            when  #{item.id} then #{item.gender}
+          </if>
+          <if test="item.gender == null ">
+            when  #{item.id} then user.gender
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where id in 
+    <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+       #{item.id} 
+    </foreach>
+  </update>
+</mapper>
